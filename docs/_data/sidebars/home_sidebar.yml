@@ -13,6 +13,6 @@ entries:
       title: pyshell
       url: core.html
     output: web
-    title: pyshell
+    title: bpyshell
   output: web
   title: Sidebar

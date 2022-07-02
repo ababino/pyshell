@@ -5,9 +5,7 @@
 ## Install
 
 ```
-git clone git@github.com:ababino/pyshell.git
-cd pyshell
-pip install .
+pip install bpyshell
 ```
 
 ## How to use
