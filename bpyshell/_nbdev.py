@@ -7,8 +7,8 @@ index = {"Command": "00_core.ipynb",
 
 modules = ["core.py"]
 
-doc_url = "https://ababino.github.io/pyshell/"
+doc_url = "https://ababino.github.io/bpyshell/"
 
-git_url = "https://github.com/ababino/pyshell/tree/master/"
+git_url = "https://github.com/ababino/bpyshell/tree/master/"
 
 def custom_doc_links(name): return None

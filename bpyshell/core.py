@@ -11,23 +11,34 @@ from fastcore.all import *
 class Command:
     """A shell command."""
     def __init__(self, name): self.name = name
-    def __call__(self, *args, shell=True, decode='utf-8', out_error=False, **kwargs):
+    def __call__(self, *args, shell=True, decode='utf-8', out_error=False, ignore_error=False,
+                 replace_underscore='-', capture=True, **kwargs):
         command = [self.name]
         if 'flags' in kwargs:
-            command.append('-'+kwargs.pop('flags'))
+            flags = kwargs.pop('flags')
+            for flag in flags:
+                if len(flag)==1:
+                    command.append('-' + flag)
+                else:
+                    command.append('--' + flag.replace('_', replace_underscore))
         for k in kwargs:
-            command.append('--' + k.replace('_','-'))
+            if len(k)==1:
+                command.append('-' + k)
+            else:
+                command.append('--' + k.replace('_', replace_underscore))
             command.append(str(kwargs[k]))
         command.extend([str(x) for x in args])
-        process = subprocess.Popen(' '.join(command), stdout=subprocess.PIPE, shell=shell, stderr=subprocess.PIPE)
+        if capture: st = {'stdout': subprocess.PIPE, 'stderr': subprocess.PIPE}
+        else: st = {}
+        process = subprocess.Popen(' '.join(command), shell=shell, **st)
         output, error = process.communicate()
         if error:
             error = error.decode("utf-8").strip('\n')
             if out_error:
                 return error
-            else:
+            elif not ignore_error:
                 raise Exception(error)
-        if decode:
+        if decode and output:
             output = output.decode("utf-8").strip('\n')
         return output
 
